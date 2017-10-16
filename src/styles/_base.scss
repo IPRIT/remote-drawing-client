@@ -55,6 +55,10 @@ b, strong {
   color: #fff;
 }
 
+canvas {
+  margin: 0 !important;
+}
+
 @include bem(scroll) {
 
   ::-webkit-scrollbar {

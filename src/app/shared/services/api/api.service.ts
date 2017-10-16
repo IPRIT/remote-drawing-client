@@ -3,9 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from "rxjs";
 import { Http, URLSearchParams } from "@angular/http";
 import { Presentation } from "./models/presentation";
+import { config } from "../../../../environments/config";
 
 export const API_PROTOCOL = 'http';
-export const API_HOST = 'localhost:9000';
+export const API_HOST = config.apiServer;
 
 @Injectable()
 export class ApiService {

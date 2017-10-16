@@ -1,3 +1,5 @@
 export const config = {
-  socketIoServer: 'http://localhost:9000'
+  frontendServer: 'localhost:4200',
+  socketIoServer: 'localhost:9000',
+  apiServer: 'localhost:9000'
 };

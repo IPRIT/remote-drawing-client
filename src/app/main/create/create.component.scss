@@ -145,4 +145,12 @@
     width: 80%;
     text-align: center;
   }
+
+  @include bem-element(presentation-link) {
+    min-width: 300px;
+
+    .mat-form-field {
+      width: 100%;
+    }
+  }
 }

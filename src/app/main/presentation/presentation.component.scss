@@ -1,0 +1,88 @@
+@import "../../../styles/helpers/all";
+
+:host {
+  @extend %ab-layer-block;
+  background: white;
+  position: relative;
+}
+
+@include bem(presentation) {
+  @extend %ab-layer-block;
+
+  $block-scope: unwrap-scope(&);
+  background-color: $gradient-right-color;
+  @include filter-gradient($gradient-right-color, $gradient-left-color, horizontal);
+  @include background-image(radial-gradient(ellipse, $gradient-right-color, $gradient-left-color));
+
+  @include bem-element(inner) {
+    @extend %ab-layer-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include bem-element(content) {
+    position: relative;
+    height: 80%;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    padding: 18px;
+  }
+
+  @include bem-element(content-inner) {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  @include bem-element(title) {
+    font-size: 1.6em;
+    margin-top: 0;
+    padding: 0;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  @include bem-element(share-link) {
+    background-color: rgba(0,0,0,.1);
+    border-radius: 100px;
+    padding: 7px 20px;
+  }
+
+  @include bem-element(header) {
+    @extend %ab-layer-flex;
+    height: auto;
+    min-height: 50px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @include bem-element(canvas) {
+    flex: 1;
+    position: relative;
+    max-height: calc(100% - 50px);
+    margin-top: 12px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+
+    > canvas {
+      margin: 0 !important;
+    }
+  }
+
+  @include bem-element(loading) {
+    @extend %ab-layer-absolute-fill;
+    @extend %ab-layer-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    z-index: 50;
+  }
+}

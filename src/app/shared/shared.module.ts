@@ -9,6 +9,8 @@ import { AbImageService } from "./components/ab-image/ab-image.service";
 import { PhotoViewerMaxPhotoHeightDirective } from './components/photo-viewer/photo-viewer-max-photo-height.directive';
 import { MatButtonModule, MatCheckboxModule, MatInputModule, MatProgressSpinnerModule } from '@angular/material';
 import { ApiService } from "./services/api/api.service";
+import { SocketApiService } from "./services/socket.io/socket-api.service";
+import { CanvasService } from "./services/canvas/canvas.service";
 
 @NgModule({
   imports: [
@@ -28,7 +30,9 @@ import { ApiService } from "./services/api/api.service";
   providers: [
     PhotoViewerService,
     AbImageService,
-    ApiService
+    ApiService,
+    SocketApiService,
+    CanvasService
   ],
   exports: [
     AbImageComponent,

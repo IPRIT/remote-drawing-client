@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { SharedModule } from "../shared/shared.module";
 import { FormsModule } from "@angular/forms";
 import { CreateComponent } from './create/create.component';
+import { PresentationComponent } from './presentation/presentation.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { CreateComponent } from './create/create.component';
   ],
   declarations: [
     MainComponent,
-    CreateComponent
+    CreateComponent,
+    PresentationComponent
   ]
 })
 export class MainModule { }

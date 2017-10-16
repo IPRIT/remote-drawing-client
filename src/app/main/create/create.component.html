@@ -17,6 +17,11 @@
           <i class="material-icons md-18">autorenew</i>
           <span>Ожидание сканирования QR-кода...</span>
         </div>
+        <div class="ab-create__presentation-link">
+          <mat-form-field hintLabel="Поделитесь ссылкой с другими">
+            <input #shareLink matInput value="{{ buildShareLink() }}" required maxlength="255">
+          </mat-form-field>
+        </div>
       </div>
     </div>
 

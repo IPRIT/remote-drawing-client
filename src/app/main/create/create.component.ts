@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { routerTransition } from "../../routing/app.routing.animations";
 import { Presentation } from "../../shared/services/api/models/presentation";
 import { ApiService } from "../../shared/services/api/api.service";
@@ -8,6 +8,8 @@ import * as firebase from 'firebase';
 import { File } from "../../shared/services/api/models/file";
 import { AngularFireDatabase } from "angularfire2/database";
 import Promise from 'bluebird';
+import { config } from "../../../environments/config";
+import { SocketApiService } from "../../shared/services/socket.io/socket-api.service";
 
 @Component({
   selector: 'app-create',
@@ -19,8 +21,10 @@ import Promise from 'bluebird';
 export class CreateComponent implements OnInit {
 
   private id: number;
-  public qrDataUrl: string;
+  private shortKey: string;
   private presentation: Observable<Presentation>;
+
+  qrDataUrl: string;
 
   isFilesSelected = false;
   isFilesUploading = false;
@@ -29,6 +33,7 @@ export class CreateComponent implements OnInit {
   isProjectSaved = false;
 
   @ViewChild('fileSelector') fileSelector: ElementRef;
+  @ViewChild('shareLink') shareLink: ElementRef;
 
   storageRef: any;
   imagesPath: string = 'images';
@@ -41,7 +46,9 @@ export class CreateComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private api: ApiService,
-    public af: AngularFireDatabase,
+    private socketApi: SocketApiService,
+    private router: Router,
+    public af: AngularFireDatabase
   ) {
     this.presentation = this.route.params.flatMap(params => {
       return api.getPresentation( params.shortKey );
@@ -49,6 +56,7 @@ export class CreateComponent implements OnInit {
     this.presentation.subscribe(result => {
       console.log(result);
       this.id = result.id;
+      this.shortKey = result.shortKey;
       this.presentationForm.name = result.name;
       this.presentationForm.files = result.Files;
     });
@@ -106,7 +114,20 @@ export class CreateComponent implements OnInit {
       this.qrDataUrl = result.qr || '';
       this.isProjectSaved = true;
       this.isProjectSaving = false;
+      this.shareLink.nativeElement.focus();
+      this.shareLink.nativeElement.select();
+      return this.socketApi.joinServer();
+    }).then(_ => {
+      return this.socketApi.joinRoom({ id: this.id });
+    }).then(_ => {
+      this.socketApi.onCloseQrLayer().subscribe(_ => {
+        this.router.navigate([ 's', this.shortKey ]);
+      });
     });
+  }
+
+  buildShareLink() {
+    return `http://${config.frontendServer}/s/${this.shortKey}`;
   }
 
   _buildChildImagePath(imageName) {

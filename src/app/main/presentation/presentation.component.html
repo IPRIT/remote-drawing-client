@@ -1,0 +1,25 @@
+<div class="ab-presentation">
+  <div class="ab-presentation__inner">
+
+    <div class="ab-presentation__content">
+
+      <div class="ab-presentation__loading" *ngIf="!(canvas.onImagesLoaded | async)">
+        <mat-progress-spinner
+                color="primary"
+                mode="indeterminate">
+        </mat-progress-spinner>
+      </div>
+
+      <div class="ab-presentation__content-inner">
+
+        <div class="ab-presentation__header">
+          <div class="ab-presentation__title">{{ (presentation | async)?.name }}</div>
+          <div class="ab-presentation__share-link">{{ buildShareLink() }}</div>
+        </div>
+
+        <div class="ab-presentation__canvas" id="presentation-canvas"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
