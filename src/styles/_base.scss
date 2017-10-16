@@ -51,7 +51,7 @@ b, strong {
 }
 
 ::selection {
-  background-color: #ff5f57;
+  background-color: #7c45dc;
   color: #fff;
 }
 
@@ -98,6 +98,14 @@ b, strong {
     ::-webkit-scrollbar-track,
     ::-webkit-scrollbar-thumb:window-inactive {
       opacity: 1;
+    }
+  }
+}
+
+button, a {
+  &.icon {
+    > i {
+      padding-right: 3%;
     }
   }
 }

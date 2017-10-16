@@ -1,0 +1,14 @@
+@import "../styles/helpers/all";
+
+:host {
+  position: absolute;
+  @extend %ab-layer-block;
+}
+
+@include bem-block(page) {
+  @extend %ab-layer-flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}

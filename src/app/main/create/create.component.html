@@ -1,0 +1,62 @@
+<div class="ab-create" [ngClass]="{'ab-create__content_saved': isProjectSaved}">
+  <div class="ab-create__inner">
+
+    <div class="ab-create__qr-layer">
+      <div class="ab-create__qr-layer-content">
+        <div class="ab-create__qr-title">
+          <span>Откройте приложение и отсканируйте этот код</span>
+        </div>
+        <div class="ab-create__qr-code" *ngIf="qrDataUrl">
+          <ab-image [abImageSrc]="qrDataUrl"></ab-image>
+        </div>
+        <div class="ab-create__result">
+          <i class="material-icons md-28">cloud_done</i>
+          <span>Сохранено!</span>
+        </div>
+        <div class="ab-create__sync-waiting">
+          <i class="material-icons md-18">autorenew</i>
+          <span>Ожидание сканирования QR-кода...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ab-create__content">
+
+      <div class="ab-create__content-inner">
+        <div class="ab-create__title">
+          <h1>Создать презентацию</h1>
+        </div>
+
+        <div class="ab-create__form-group ab-create__name">
+          <mat-form-field hintLabel="Максимум 255 символов">
+            <input matInput [(ngModel)]="presentationForm.name" placeholder="Название презентации" required maxlength="255">
+          </mat-form-field>
+        </div>
+
+        <div class="ab-create__form-group ab-create__files">
+          <div class="ab-create__files-selection" *ngIf="!isFilesSelected">
+            <button mat-raised-button color="primary" (click)="selectFiles($event)">+ Выбрать файлы</button>
+            <input #fileSelector multiple (change)="handleFileSelection($event)" type="file" id="file" name="files[]" accept="image/*"/>
+          </div>
+          <div class="ab-create__files-loading" *ngIf="isFilesSelected && isFilesUploading">
+            <mat-progress-spinner
+                    color="accent"
+                    mode="indeterminate">
+            </mat-progress-spinner>
+          </div>
+          <div class="ab-create__uploaded-layer" *ngIf="presentationForm.files.length > 0">
+            <div class="ab-create__uploaded-image" *ngFor="let photo of presentationForm.files">
+              <ab-image class="ab-create__image" [abImageSrc]="photo.fileUrl" [abImageThumbnailSrc]="photo.fileUrl"></ab-image>
+            </div>
+          </div>
+        </div>
+
+        <div class="ab-create__form-group ab-create__save">
+          <button mat-raised-button color="primary" disabled="{{ isProjectSaving }}" (click)="saveProject($event)">Сохранить</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

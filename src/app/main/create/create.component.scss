@@ -1,0 +1,148 @@
+@import "../../../styles/helpers/all";
+
+:host {
+  @extend %ab-layer-block;
+  background: white;
+  position: relative;
+}
+
+@include bem(create) {
+  @extend %ab-layer-block;
+  $block-scope: unwrap-scope(&);
+
+  background-color: $gradient-right-color;
+  @include filter-gradient($gradient-right-color, $gradient-left-color, horizontal);
+  @include background-image(radial-gradient(ellipse, $gradient-right-color, $gradient-left-color));
+
+  @include bem-element(inner) {
+    @extend %ab-layer-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include bem-element(content) {
+    position: relative;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    padding: 18px;
+    min-width: 500px;
+    max-width: 800px;
+    width: 80vw;
+    font-family: merge-fonts-stack('Roboto', $fonts-stack);
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  @include bem-element(title) {
+    h1 {
+      font-size: 1.6em;
+      margin-top: 0;
+      padding: 0;
+    }
+  }
+
+  @include bem-element(name) {
+  }
+
+  @include bem-element(form-group) {
+    margin-top: 18px;
+  }
+
+  @include bem-element(files-selection) {
+    input {
+      display: none;
+    }
+  }
+
+  @include bem-element(files-loading) {
+    @extend %ab-layer-flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px 0;
+  }
+
+  @include bem-element(uploaded-layer) {
+    @extend %ab-layer-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  @include bem-element(uploaded-image) {
+    width: 150px;
+    margin-top: 18px;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,.1);
+  }
+
+  @include bem-element(image) {
+    width: 100%;
+  }
+
+  @include bem-element(save) {
+    border-top: 1px solid rgba(0,0,0,.1);
+    padding-top: 16px;
+    text-align: right;
+  }
+
+  @include bem-element(qr-layer) {
+    @extend %ab-layer-absolute-fill;
+    background: #fff;
+    z-index: 5000;
+    pointer-events: none;
+    opacity: 0;
+    @include transition-only-for(.2s, (opacity));
+
+    #{get-bem-modifier-full('create', 'content', 'saved')} & {
+      pointer-events: auto;
+      opacity: 1;
+    }
+  }
+
+  @include bem-element(result) {
+    text-align: center;
+
+    > i {
+      color: #7c45dc;
+      position: relative;
+      top: 6px;
+    }
+  }
+
+  @include bem-element(sync-waiting) {
+    font-size: .6em;
+    text-align: center;
+    margin-top: 5px;
+
+    > i {
+      color: #7c45dc;
+      position: relative;
+      top: 5px;
+    }
+  }
+
+  @include bem-element(qr-code) {
+    width: 300px;
+    height: 300px;
+    margin: 20px auto 20px;
+  }
+
+  @include bem-element(qr-code-image) {
+    width: 100%;
+  }
+
+  @include bem-element(qr-layer-content) {
+    @extend %ab-layer-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include bem-element(qr-title) {
+    font-size: 1.4em;
+    width: 80%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,51 @@
+@import "../../styles/helpers/all";
+
+:host {
+  @extend %ab-layer-block;
+  background: white;
+  position: relative;
+}
+
+@include bem(main) {
+  @extend %ab-layer-block;
+  $block-scope: unwrap-scope(&);
+
+  background-color: $gradient-right-color;
+  @include filter-gradient($gradient-right-color, $gradient-left-color, horizontal);
+  @include background-image(radial-gradient(ellipse, $gradient-right-color, $gradient-left-color));
+
+  @include bem-element(inner) {
+    @extend %ab-layer-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include bem-element(create) {
+    @extend %ab-layer-flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    width: 300px;
+    background: white;
+    border-radius: 500px;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  }
+
+  @include bem-element(create-text) {
+    padding-left: 10%;
+    padding-right: 10%;
+    font-family: merge-fonts-stack('Comfortaa', $fonts-stack);
+    text-align: center;
+
+    @include media-query(lt-sm) {
+      font-size: .9em;
+    }
+    @include media-query(lt-xs) {
+      font-size: .7em;
+    }
+  }
+
+  @include bem-element(create-button) {
+    margin-top: 16px;
+  }
+}
