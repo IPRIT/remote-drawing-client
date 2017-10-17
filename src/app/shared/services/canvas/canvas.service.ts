@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { File } from "../api/models/file";
-import { Subject, BehaviorSubject } from "rxjs";
+import { Subject } from "rxjs";
 
 @Injectable()
 export class CanvasService {
@@ -8,11 +8,12 @@ export class CanvasService {
   public game: any;
   public files: File[] = [];
 
-  public onImagesLoaded = new BehaviorSubject(false);
+  public onImagesLoaded = new Subject();
 
   private _frames = 0;
   private _cursors: any;
   private _image: any;
+  private _lastParams: any;
 
   constructor(
   ) {
@@ -49,6 +50,43 @@ export class CanvasService {
     } else {
       image.scale.set(heightRatio, heightRatio);
     }
+  }
+
+  draw(params) {
+    if (!this.game) {
+      return false;
+    }
+    console.log(params);
+    if (!this._lastParams || this._lastParams.lineCode !== params.lineCode) {
+      this._startPath( params );
+    } else {
+      this._continuePath( params );
+    }
+    this._lastParams = params;
+  }
+  
+  _startPath(params) {
+    console.log('Starting new path');
+    let game = this.game;
+    let currentGraphics = game.add.graphics(0, 0);
+    currentGraphics.lineStyle(0);
+    currentGraphics.beginFill(params.color, params.alpha);
+    currentGraphics.drawCircle(this.game.width * params.x, this.game.height * params.y, params.lineWidth);
+    currentGraphics.endFill();
+  }
+
+  _continuePath( params ) {
+    console.log('Continuing new path');
+    let game = this.game;
+    let currentGraphics = game.add.graphics(0, 0);
+    currentGraphics.lineStyle(params.lineWidth, params.color, params.alpha);
+    currentGraphics.moveTo(this._lastParams.x * game.width, this._lastParams.y * game.height);
+    currentGraphics.lineTo(params.x * game.width, params.y * game.height);
+
+    currentGraphics.lineStyle(0);
+    currentGraphics.beginFill(params.color, params.alpha);
+    currentGraphics.drawCircle(params.x * game.width, params.y * game.height, params.lineWidth);
+    currentGraphics.endFill();
   }
 
   _createGameInstance() {
@@ -92,12 +130,16 @@ export class CanvasService {
   }
 
   _render() {
-    this.game.debug.cameraInfo(this.game.camera, 32, 32);
+    //this.game.debug.cameraInfo(this.game.camera, 32, 32);
   }
 
   _attachEvents() {
     window.addEventListener('resize', this._resize.bind(this));
     this._resize();
+  }
+
+  _detachEvents() {
+    window.removeEventListener('resize', this._resize.bind(this));
   }
 
   _resize() {
@@ -134,5 +176,18 @@ export class CanvasService {
 
   get screenHeight() {
     return this.parent.clientHeight;
+  }
+
+  destroy() {
+    this._detachEvents();
+    this.onImagesLoaded.next( false );
+    if (this.game) {
+      if (this._image) {
+        this._image.destroy();
+      }
+      this.game.destroy();
+    }
+    this._image = null;
+    this.game = null;
   }
 }

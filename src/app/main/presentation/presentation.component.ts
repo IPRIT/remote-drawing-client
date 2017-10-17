@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { Presentation } from "../../shared/services/api/models/presentation";
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { SocketApiService } from "../../shared/services/socket.io/socket-api.service";
 import { ApiService } from "../../shared/services/api/api.service";
 import { config } from "../../../environments/config";
@@ -13,12 +13,16 @@ import { File } from "../../shared/services/api/models/file";
   templateUrl: './presentation.component.html',
   styleUrls: ['./presentation.component.scss']
 })
-export class PresentationComponent implements OnInit {
+export class PresentationComponent implements OnInit, OnDestroy {
 
   private id: number;
   private files: File[] = [];
   private shortKey: string;
   private presentation: Observable<Presentation>;
+
+  private onSlideChangedSubscription: Subscription;
+  private onImagesLoadedSubscription: Subscription;
+  private onDrawSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,14 +45,17 @@ export class PresentationComponent implements OnInit {
       });
     });
 
-    this.canvas.onImagesLoaded.filter(value => !!value).subscribe(_ => {
+    this.onImagesLoadedSubscription = this.canvas.onImagesLoaded.filter(value => !!value).take(1).subscribe(_ => {
       this.canvas.showSlide(1);
     });
   }
 
   _attachEvents() {
-    this.socketApi.onSlideChanged.subscribe((slideNumber: number) => {
+    this.onSlideChangedSubscription = this.socketApi.onSlideChanged.distinctUntilChanged().subscribe((slideNumber: number) => {
       this.canvas.showSlide( slideNumber );
+    });
+    this.onDrawSubscription = this.socketApi.onDraw.subscribe(params => {
+      this.canvas.draw( params );
     });
   }
 
@@ -57,5 +64,12 @@ export class PresentationComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.canvas.destroy();
+    this.onImagesLoadedSubscription.unsubscribe();
+    this.onSlideChangedSubscription.unsubscribe();
+    this.onDrawSubscription.unsubscribe();
   }
 }
