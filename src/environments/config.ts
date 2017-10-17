@@ -1,5 +1,5 @@
 export const config = {
-  frontendServer: 'localhost:4200',
-  socketIoServer: 'localhost:9000',
-  apiServer: 'localhost:9000'
+  frontendServer: 'remote-drawing.firebaseapp.com',
+  socketIoServer: 'remote-drawing.alexbelov.xyz',
+  apiServer: 'remote-drawing.alexbelov.xyz'
 };
