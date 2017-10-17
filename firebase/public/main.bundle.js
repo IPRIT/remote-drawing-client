@@ -2266,7 +2266,7 @@ var SharedModule = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return config; });
 var config = {
-    frontendServer: 'remote-drawing.firebaseapp.com',
+    frontendServer: 'remote-drawing-client.alexbelov.xyz',
     socketIoServer: 'remote-drawing.alexbelov.xyz',
     apiServer: 'remote-drawing.alexbelov.xyz'
 };
