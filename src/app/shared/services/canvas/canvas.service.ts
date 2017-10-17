@@ -64,28 +64,32 @@ export class CanvasService {
     }
     this._lastParams = params;
   }
-  
+
   _startPath(params) {
     console.log('Starting new path');
     let game = this.game;
     let currentGraphics = game.add.graphics(0, 0);
+    let offsetX = this._image.x - this._image.width / 2;
+    let offsetY = this._image.y - this._image.height / 2;
     currentGraphics.lineStyle(0);
     currentGraphics.beginFill(params.color, params.alpha);
-    currentGraphics.drawCircle(this.game.width * params.x, this.game.height * params.y, params.lineWidth);
+    currentGraphics.drawCircle(this._image.width * params.x + offsetX, this._image.height * params.y + offsetY, params.lineWidth);
     currentGraphics.endFill();
   }
 
   _continuePath( params ) {
     console.log('Continuing new path');
     let game = this.game;
+    let offsetX = this._image.x - this._image.width / 2;
+    let offsetY = this._image.y - this._image.height / 2;
     let currentGraphics = game.add.graphics(0, 0);
     currentGraphics.lineStyle(params.lineWidth, params.color, params.alpha);
-    currentGraphics.moveTo(this._lastParams.x * game.width, this._lastParams.y * game.height);
-    currentGraphics.lineTo(params.x * game.width, params.y * game.height);
+    currentGraphics.moveTo(this._lastParams.x * this._image.width + offsetX, this._lastParams.y * this._image.height + offsetY);
+    currentGraphics.lineTo(params.x * this._image.width + offsetX, params.y * this._image.height + offsetY);
 
     currentGraphics.lineStyle(0);
     currentGraphics.beginFill(params.color, params.alpha);
-    currentGraphics.drawCircle(params.x * game.width, params.y * game.height, params.lineWidth);
+    currentGraphics.drawCircle(params.x * this._image.width + offsetX, params.y * this._image.height + offsetY, params.lineWidth);
     currentGraphics.endFill();
   }
 
