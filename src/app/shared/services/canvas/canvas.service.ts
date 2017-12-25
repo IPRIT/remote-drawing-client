@@ -35,6 +35,7 @@ export class CanvasService {
     if (currentImage) {
       currentImage.destroy();
     }
+    this.clear();
     let image = this._image = game.add.image(0, 0, `slide${number}`);
     image.anchor.setTo(.5, .5);
     image.position.set(this.screenWidth / 2, this.screenHeight / 2);
@@ -67,10 +68,11 @@ export class CanvasService {
 
   clear(params = {}) {
     let game = this.game;
-    console.log(game);
-    game.stage.children[0].children.filter(val => {
-      return val.type === 3;
-    }).forEach(x => x.destroy());
+    for (let i = 0; i < 1000; ++i) {
+      game.world.children.filter(x => {
+        return x.type === 3;
+      }).forEach(x => x.destroy());
+    }
   }
 
   _startPath(params) {

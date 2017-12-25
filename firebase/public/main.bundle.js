@@ -1673,6 +1673,7 @@ var CanvasService = /** @class */ (function () {
         if (currentImage) {
             currentImage.destroy();
         }
+        this.clear();
         var image = this._image = game.add.image(0, 0, "slide" + number);
         image.anchor.setTo(.5, .5);
         image.position.set(this.screenWidth / 2, this.screenHeight / 2);
@@ -1705,10 +1706,11 @@ var CanvasService = /** @class */ (function () {
     CanvasService.prototype.clear = function (params) {
         if (params === void 0) { params = {}; }
         var game = this.game;
-        console.log(game);
-        game.stage.children[0].children.filter(function (val) {
-            return val.type === 3;
-        }).forEach(function (x) { return x.destroy(); });
+        for (var i = 0; i < 1000; ++i) {
+            game.world.children.filter(function (x) {
+                return x.type === 3;
+            }).forEach(function (x) { return x.destroy(); });
+        }
     };
     CanvasService.prototype._startPath = function (params) {
         console.log('Starting new path');
