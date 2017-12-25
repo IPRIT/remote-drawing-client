@@ -65,6 +65,14 @@ export class CanvasService {
     this._lastParams = params;
   }
 
+  clear(params = {}) {
+    let game = this.game;
+    console.log(game);
+    game.stage.children[0].children.filter(val => {
+      return val.type === 3;
+    }).forEach(x => x.destroy());
+  }
+
   _startPath(params) {
     console.log('Starting new path');
     let game = this.game;

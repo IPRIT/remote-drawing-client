@@ -563,6 +563,9 @@ var PresentationComponent = /** @class */ (function () {
         this.onDrawSubscription = this.socketApi.onDraw.subscribe(function (params) {
             _this.canvas.draw(params);
         });
+        this.onClearSubscription = this.socketApi.onClear.subscribe(function (params) {
+            _this.canvas.clear(params);
+        });
     };
     PresentationComponent.prototype.buildShareLink = function () {
         return "http://" + __WEBPACK_IMPORTED_MODULE_4__environments_config__["a" /* config */].frontendServer + "/s/" + this.shortKey;
@@ -1699,6 +1702,14 @@ var CanvasService = /** @class */ (function () {
         }
         this._lastParams = params;
     };
+    CanvasService.prototype.clear = function (params) {
+        if (params === void 0) { params = {}; }
+        var game = this.game;
+        console.log(game);
+        game.stage.children[0].children.filter(function (val) {
+            return val.type === 3;
+        }).forEach(function (x) { return x.destroy(); });
+    };
     CanvasService.prototype._startPath = function (params) {
         console.log('Starting new path');
         var game = this.game;
@@ -2114,6 +2125,7 @@ var SocketApiService = /** @class */ (function () {
         this._isJoined = false;
         this.onSlideChanged = new __WEBPACK_IMPORTED_MODULE_3_rxjs__["Subject"]();
         this.onDraw = new __WEBPACK_IMPORTED_MODULE_3_rxjs__["Subject"]();
+        this.onClear = new __WEBPACK_IMPORTED_MODULE_3_rxjs__["Subject"]();
     }
     SocketApiService.prototype.joinServer = function () {
         var _this = this;
@@ -2136,6 +2148,7 @@ var SocketApiService = /** @class */ (function () {
                 _this._isJoined = true;
                 _this._subscribeSlideChanges();
                 _this._subscribeDrawing();
+                _this._subscribeClear();
                 resolve(socket);
             });
         });
@@ -2165,6 +2178,12 @@ var SocketApiService = /** @class */ (function () {
         var _this = this;
         this._socket.on('room.draw', function (data) {
             _this.onDraw.next(data);
+        });
+    };
+    SocketApiService.prototype._subscribeClear = function () {
+        var _this = this;
+        this._socket.on('room.clear', function (data) {
+            _this.onClear.next(data);
         });
     };
     SocketApiService = __decorate([
@@ -2269,6 +2288,9 @@ var config = {
     frontendServer: 'remote-drawing-client.alexbelov.xyz',
     socketIoServer: 'remote-drawing.alexbelov.xyz',
     apiServer: 'remote-drawing.alexbelov.xyz'
+    // frontendServer: 'localhost:9001',
+    // socketIoServer: 'localhost:9000',
+    // apiServer: 'localhost:9000'
 };
 //# sourceMappingURL=config.js.map
 

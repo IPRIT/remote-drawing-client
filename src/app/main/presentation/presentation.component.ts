@@ -23,6 +23,7 @@ export class PresentationComponent implements OnInit, OnDestroy {
   private onSlideChangedSubscription: Subscription;
   private onImagesLoadedSubscription: Subscription;
   private onDrawSubscription: Subscription;
+  private onClearSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +57,9 @@ export class PresentationComponent implements OnInit, OnDestroy {
     });
     this.onDrawSubscription = this.socketApi.onDraw.subscribe(params => {
       this.canvas.draw( params );
+    });
+    this.onClearSubscription = this.socketApi.onClear.subscribe(params => {
+      this.canvas.clear( params );
     });
   }
 

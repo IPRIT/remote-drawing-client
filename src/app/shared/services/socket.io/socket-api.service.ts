@@ -17,6 +17,7 @@ export class SocketApiService {
 
   public onSlideChanged = new Subject();
   public onDraw = new Subject();
+  public onClear = new Subject();
 
   constructor(
   ) {
@@ -42,6 +43,7 @@ export class SocketApiService {
         this._isJoined = true;
         this._subscribeSlideChanges();
         this._subscribeDrawing();
+        this._subscribeClear();
         resolve(socket);
       });
     });
@@ -72,6 +74,12 @@ export class SocketApiService {
   _subscribeDrawing() {
     this._socket.on('room.draw', data => {
       this.onDraw.next( data );
+    });
+  }
+
+  _subscribeClear() {
+    this._socket.on('room.clear', data => {
+      this.onClear.next( data );
     });
   }
 }
